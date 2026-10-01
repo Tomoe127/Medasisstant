@@ -1,0 +1,31 @@
+spring:
+  autoconfigure:
+    exclude:
+      - org.springframework.ai.vectorstore.chroma.autoconfigure.ChromaVectorStoreAutoConfiguration
+  application:
+    name: medassistant
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/medassistant
+    username: postgres
+    password: postgres
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8090/realms/medassistant
+  ai:
+    chat:
+      memory:
+        repository:
+          jdbc:
+            initialize-schema: always
+    vectorstore:
+      chroma:
+        url: http://localhost:8000
+        # si solo hubiera 1 modelo a usar
+#        collection-name: medassistant
+#        initialize-schema: true

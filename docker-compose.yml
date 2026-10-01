@@ -1,0 +1,53 @@
+services:
+  postgres-app:
+    image: postgres:17
+    container_name: medaassistant-db
+    environment:
+      POSTGRES_DB: medassistant
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - medassistant-data:/var/lib/postgresql/data
+
+  postgres-keycloak:
+    image: postgres:17
+    container_name: keycloak-db
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: keycloak
+    ports:
+      - "5433:5432"
+    volumes:
+      - keycloak-data:/var/lib/postgresql/data
+  keycloak:
+    image: keycloak/keycloak:26.2.5
+    container_name: medassistant-keycloak
+    command: start-dev
+    environment:
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://postgres-keycloak:5432/keycloak
+      KC_DB_USERNAME: keycloak
+      KC_DB_PASSWORD: keycloak
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    ports:
+      - "8090:8080"
+    depends_on:
+      - postgres-keycloak
+
+  chroma:
+    image: chromadb/chroma
+    container_name: medassistant-chroma
+    ports:
+      - "8000:8000"
+    environment:
+      - IS_PERSISTENT=TRUE
+    volumes:
+      - chroma-data:/chroma/chroma
+volumes:
+  medassistant-data:
+  keycloak-data:
+  chroma-data:
