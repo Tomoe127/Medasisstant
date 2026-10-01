@@ -36,6 +36,7 @@ public class AssistantConfig {
     private final DrugInfoTool drugInfoTool;
     private final AppointmentBookingTool appointmentBookingTool;
     private final ChatMemory chatMemory;
+    private final MedicalAuditAdvisor medicalAuditAdvisor;
 
     @Bean("geminiClient")
     ChatClient geminiClient(
@@ -60,7 +61,7 @@ public class AssistantConfig {
                         {question_answer_context}
                         si la informacion no esta en los documentos, puedes usar tus herramientas o
                         tu conocimiento general para responder"""))
-                                .build())
+                                .build(), medicalAuditAdvisor)
                 .build();
     }
 
