@@ -43,24 +43,40 @@ public class ChatController {
     }
 
     @PostMapping("/explain")
-    public ResponseEntity<String> explainCondition(@Valid @RequestBody ChatRequest request){
-        return ResponseEntity.ok(assistantService.explainCondition(request.prompt(), request.model()));
+    public ResponseEntity<String> explainCondition(
+            @Valid @RequestBody ChatRequest request,
+            @AuthenticationPrincipal Jwt jwt
+    ){
+        Long userId = jwt.getClaim("userId");
+        return ResponseEntity.ok(assistantService.explainCondition(request.prompt(), request.model(), userId));
     }
 
 
     @PostMapping("/symptoms")
-    public ResponseEntity<String> analyzeSymptoms(@Valid @RequestBody ChatRequest request){
-        return ResponseEntity.ok(assistantService.analyzeSymptoms(request.prompt(), request.model()));
+    public ResponseEntity<String> analyzeSymptoms(
+            @Valid @RequestBody ChatRequest request,
+            @AuthenticationPrincipal Jwt jwt
+    ){
+        Long userId = jwt.getClaim("userId");
+        return ResponseEntity.ok(assistantService.analyzeSymptoms(request.prompt(), request.model(), userId));
     }
 
     @PostMapping("/diagnose")
-    public ResponseEntity<String> diagnoseWithReasoning(@Valid @RequestBody ChatRequest request){
-        return ResponseEntity.ok(assistantService.diagnoseWithReasoning(request.prompt(), request.model()));
+    public ResponseEntity<String> diagnoseWithReasoning(
+            @Valid @RequestBody ChatRequest request,
+            @AuthenticationPrincipal Jwt jwt
+    ){
+        Long userId = jwt.getClaim("userId");
+        return ResponseEntity.ok(assistantService.diagnoseWithReasoning(request.prompt(), request.model(), userId));
     }
 
     @PostMapping("/consult")
-    public ResponseEntity<String> consult(@Valid @RequestBody ChatRequest request){
-        return ResponseEntity.ok(assistantService.consult(request.prompt(), request.model()));
+    public ResponseEntity<String> consult(
+            @Valid @RequestBody ChatRequest request,
+            @AuthenticationPrincipal Jwt jwt
+    ){
+        Long userId = jwt.getClaim("userId");
+        return ResponseEntity.ok(assistantService.consult(request.prompt(), request.model(), userId));
     }
 
 }

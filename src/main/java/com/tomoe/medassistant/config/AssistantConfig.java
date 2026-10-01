@@ -52,8 +52,7 @@ public class AssistantConfig {
                 .defaultSystem(systemPrompt)
                 .defaultTools(appointmentSearchTool, doctorInfoTool, patientInfoTool,
                         drugInfoTool, appointmentBookingTool)
-                .defaultAdvisors(MessageChatMemoryAdvisor.builder(chatMemory).build(),
-                        QuestionAnswerAdvisor.builder(vectorStore)
+                .defaultAdvisors(QuestionAnswerAdvisor.builder(vectorStore)
                                 .searchRequest(SearchRequest.builder()
                                         .similarityThreshold(0.7).topK(3).build())
                                 .promptTemplate(new PromptTemplate("""
