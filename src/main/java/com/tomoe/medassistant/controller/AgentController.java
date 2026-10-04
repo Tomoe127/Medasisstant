@@ -2,6 +2,7 @@ package com.tomoe.medassistant.controller;
 
 import com.tomoe.medassistant.agent.AppointmentChainService;
 import com.tomoe.medassistant.agent.RoutingWorkflowService;
+import com.tomoe.medassistant.agent.orchestrator.OrchestratorService;
 import com.tomoe.medassistant.dto.ChatRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,7 @@ public class AgentController {
 
     private final AppointmentChainService appointmentChainService;
     private final RoutingWorkflowService routingWorkflowService;
+    private final OrchestratorService orchestratorService;
 
     @PostMapping("/chain/appointment")
     public ResponseEntity<String> bookAppointmentChain(
@@ -39,5 +41,14 @@ public class AgentController {
     ){
         Long userId = jwt.getClaim("userId");
         return ResponseEntity.ok(routingWorkflowService.routeQuery(request.prompt(), request.model(), userId));
+    }
+
+    @PostMapping("orchestrator")
+    public ResponseEntity<String> orchestrate(
+            @Valid @RequestBody ChatRequest request,
+            @AuthenticationPrincipal Jwt jwt
+    ) {
+        Long userId = jwt.getClaim("userId");
+        return ResponseEntity.ok(orchestratorService.orchestrate(request.prompt(), request.model(), userId));
     }
 }
