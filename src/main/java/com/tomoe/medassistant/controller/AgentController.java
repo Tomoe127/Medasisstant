@@ -51,4 +51,20 @@ public class AgentController {
         Long userId = jwt.getClaim("userId");
         return ResponseEntity.ok(orchestratorService.orchestrate(request.prompt(), request.model(), userId));
     }
+
+    @PostMapping("/chain/appointment/confirm")
+    public ResponseEntity<String> confirmBooking(
+            @AuthenticationPrincipal Jwt jwt
+    ){
+        Long userId = jwt.getClaim("userId");
+        return ResponseEntity.ok(appointmentChainService.confirmBooking(userId));
+    }
+
+    @PostMapping("/chain/appointment/cancel")
+    public ResponseEntity<String> cancelBooking(
+            @AuthenticationPrincipal Jwt jwt
+    ){
+        Long userId = jwt.getClaim("userId");
+        return ResponseEntity.ok(appointmentChainService.cancelBooking(userId));
+    }
 }
